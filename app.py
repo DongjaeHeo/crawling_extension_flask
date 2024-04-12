@@ -50,6 +50,7 @@ def handle_post():
 
    # Convert DataFrame to JSON
     result_json = df.to_json(orient='records')
+    print(result_json)
     return jsonify({"data": result_json})
 
 if __name__ == '__main__':
