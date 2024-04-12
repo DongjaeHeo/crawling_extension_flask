@@ -47,9 +47,9 @@ def handle_post():
 
 
 
-
-
-    return df  # Return the JSON data received
+   # Convert DataFrame to JSON
+    result_json = df.to_json(orient='records')
+    return jsonify({"data": result_json})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=8090, debug=True)
