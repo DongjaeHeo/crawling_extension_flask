@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from flask_cors import CORS
@@ -41,20 +41,17 @@ def handle_post():
     df = pd.DataFrame(class_elements)
 
     # CSV 파일로 저장
-    csv = df.to_csv('class_elements.csv', index=False, encoding='utf-8-sig')
+    df.to_csv('class_elements.csv', index=False, encoding='utf-8-sig')
     print("CSV 파일이 성공적으로 생성되었습니다.")
 
-    response = Response(csv)
-    response.headers['Content-Disposition'] = 'attachment; filename=elements.csv'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
 
 
 
-#    # Convert DataFrame to JSON
-#     result_json = df.to_json(orient='records')
-#     print(result_json)
-#     return jsonify({"data": df})
+
+   # Convert DataFrame to JSON
+    result_json = df.to_json(orient='records')
+    print(result_json)
+    return jsonify({"data": df})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=8090, debug=True)
