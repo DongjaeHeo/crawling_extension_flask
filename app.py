@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from flask_cors import CORS
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
