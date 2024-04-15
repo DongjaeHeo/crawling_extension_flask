@@ -43,10 +43,10 @@ def handle_post():
     # CSV 파일로 저장
     csv_data = df.to_csv('class_elements.csv', index=False, encoding='utf-8-sig')
 
-    return data
     response = Response(csv_data)
     response.headers["Content-Disposition"] = 'attachment; filename="data.csv"'
     response.headers['Content-Type'] = 'text/csv'
+    return response
 
 
 
