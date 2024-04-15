@@ -44,7 +44,7 @@ def handle_post():
     csv_data = df.to_csv('class_elements.csv', index=False, encoding='utf-8-sig')
 
     response = Response(csv_data)
-    response.headers["Content-Disposition"] = 'attachment; filename="data.csv"'
+    response.headers["Content-Disposition"] = 'attachment; filename="class_elements.csv"'
     response.headers['Content-Type'] = 'text/csv'
     return response
 
