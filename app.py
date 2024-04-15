@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, after_this_request
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from flask_cors import CORS
 import pandas as pd
 from werkzeug.exceptions import Unauthorized
 from dotenv import load_dotenv
+import time
 import os
+
 
 load_dotenv()
 
@@ -51,22 +53,32 @@ def handle_post():
     for elements in class_elements.values():
         elements.extend([''] * (max_length - len(elements)))
 
+
     # pandas DataFrame 생성
     df = pd.DataFrame(class_elements)
-
+    start_time = time.time()
 
     # CSV 파일로 저장
 
     # csv_data = df.to_csv(index = False, encoding = 'utf-8')
-    df.to_csv('class_elements.csv', index=False, encoding='utf-8-sig')
+    df.to_csv(f'class_elements{start_time}.csv', index=False, encoding='utf-8-sig')
     # csv_data = pd.read_csv('class_elements.csv', encoding='utf-8-sig')
     # response = Response(csv_data)
     # response.headers["Content-Disposition"] = 'attachment; filename="class_elements.csv"'
     # response.headers['Content-Type'] = 'text/csv'
     # return response
-    filename = 'class_elements.csv'
+    filename = f'class_elements{start_time}.csv'
 
-    # Correct approach: Send the file directly without reading it into a DataFrame
+    # remove file after download // 다운로드 후 파일 삭제
+    @after_this_request
+    def remove_file(response):
+        os.remove(filename)
+        return response
+
+
+
+
+    # send file to client // 파일 전송
     return send_file(filename, as_attachment=True, mimetype='text/csv')
 
 
@@ -74,7 +86,7 @@ def handle_post():
 
 
     # print("CSV 파일이 성공적으로 생성되었습니다.")
-   # Convert DataFrame to JSON
+#    Convert DataFrame to JSON
     # result_json = df.to_json(orient='records')
     # print(result_json)
     # return jsonify({"data": result_json})
