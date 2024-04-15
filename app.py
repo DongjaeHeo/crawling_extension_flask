@@ -46,12 +46,15 @@ def handle_post():
 
     # csv_data = df.to_csv(index = False, encoding = 'utf-8')
     df.to_csv('class_elements.csv', index=False, encoding='utf-8-sig')
-    csv_data = pd.read_csv('class_elements.csv', encoding='utf-8-sig')
-    response = Response(csv_data)
-    response.headers["Content-Disposition"] = 'attachment; filename="class_elements.csv"'
-    response.headers['Content-Type'] = 'text/csv'
-    return response
+    # csv_data = pd.read_csv('class_elements.csv', encoding='utf-8-sig')
+    # response = Response(csv_data)
+    # response.headers["Content-Disposition"] = 'attachment; filename="class_elements.csv"'
+    # response.headers['Content-Type'] = 'text/csv'
+    # return response
+    filename = 'class_elements.csv'
 
+    # Correct approach: Send the file directly without reading it into a DataFrame
+    return send_file(filename, as_attachment=True, mimetype='text/csv')
 
 
 
