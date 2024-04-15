@@ -1,11 +1,19 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request, jsonify, Response, send_file
+from flask import Flask, request, jsonify, send_file
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from flask_cors import CORS
 import pandas as pd
+from werkzeug.exceptions import Unauthorized
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
+
+AUTH_TOKEN = os.getenv('AUTH_TOKEN')
+
 CORS(app)
 @app.route('/')
 def home():
@@ -14,6 +22,11 @@ def home():
 @app.route('/post', methods=['POST'])
 def handle_post():
     # Ensure there is data in the request
+    token = request.headers.get('Authorization', None)
+
+
+    if token != AUTH_TOKEN:
+        raise Unauthorized("Invalid or missing token")
 
     if not request.is_json:
         return jsonify({"error": "Missing JSON in request"}), 400
