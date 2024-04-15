@@ -46,7 +46,7 @@ def handle_post():
     response = Response(csv_data)
     response.headers["Content-Disposition"] = 'attachment; filename="data.csv"'
     response.headers['Content-Type'] = 'text/csv'
-    return response
+    return data
 
 
 
